@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deep Link Trigger</title>
+    <title>Auto Deep Link Redirect</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Custom styles for aesthetic appeal */
@@ -97,87 +97,57 @@
 </head>
 <body class="antialiased">
     <div class="container">
-        <h1 class="title">Deep Link Trigger Example</h1>
+        <h1 class="title">Auto Deep Link Redirect</h1>
         <p class="description">
-            This page demonstrates how to programmatically trigger a deep link. Clicking the "Trigger Deep Link" button will attempt to open the specified app link. If the app is not installed, it might redirect to a fallback URL (e.g., app store) depending on the deep link configuration.
+            This page will automatically attempt to trigger the deep link when it loads.
+            If the associated app is installed, it should open. If not, the behavior depends
+            on the deep link's configuration (e.g., redirect to an app store or a fallback URL).
         </p>
 
         <div class="button-container">
-            <button id="triggerButton" class="btn btn-primary">
-                Trigger Deep Link
-            </button>
+            <!-- The auto-redirect handles this now, but keeping a direct link for manual testing/reference -->
             <a href="https://tokopedia.link/6Eal7jYt0Vb" target="_blank" class="btn btn-secondary">
-                Direct Link (For Testing)
+                Direct Link (For Manual Testing)
             </a>
         </div>
 
-        <!-- Hidden anchor tag used for programmatic click -->
+        <!-- Hidden anchor tag not strictly needed for window.location.href, but kept for consistency -->
         <a id="hiddenDeepLink" href="https://tokopedia.link/6Eal7jYt0Vb"></a>
 
         <div class="explanation">
-            <p><strong>How Deep Links Work:</strong></p>
+            <p><strong>How Auto-Redirects Work:</strong></p>
             <p>
-                When you click a deep link, the browser attempts to open the associated application on your device.
-                If the app is installed, it will typically launch and navigate to the specific content defined by the link.
-                If the app is not installed, the behavior can vary:
+                By placing the `window.location.href = deepLinkUrl;` line directly within the `DOMContentLoaded` event,
+                the browser is instructed to navigate to the deep link as soon as the HTML content is fully loaded
+                and parsed. This initiates the deep link process immediately without any user interaction.
             </p>
             <ul class="list-disc pl-5 mt-2">
-                <li>It might do nothing (fail silently).</li>
-                <li>It might redirect you to the app store (Google Play Store or Apple App Store).</li>
-                <li>It might redirect you to a specific webpage.</li>
+                <li>This is ideal for "bridge pages" that are solely meant to redirect users.</li>
+                <li>Consider user experience: sometimes a brief message like "Redirecting..." is helpful before the auto-redirect.</li>
             </ul>
-            <p class="mt-2">
-                This behavior is configured by the app developer and the deep linking service they use.
-            </p>
         </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const deepLinkUrl = "https://tokopedia.link/6Eal7jYt0Vb";
-            const triggerButton = document.getElementById('triggerButton');
-            const hiddenDeepLink = document.getElementById('hiddenDeepLink');
 
-            // --- Method 1: Using window.location.href ---
-            // This method is direct and often the most reliable for initiating a deep link.
-            // It effectively tells the browser to navigate to that URL.
-            function triggerDeepLinkWithLocation() {
-                console.log('Attempting to open deep link using window.location.href...');
-                window.location.href = deepLinkUrl;
-            }
+            // --- Auto-redirect on page load ---
+            // This line now executes automatically when the page is ready.
+            console.log('Page loaded. Attempting to auto-open deep link using window.location.href...');
+            window.location.href = deepLinkUrl;
 
-            // --- Method 2: Programmatically clicking a hidden anchor tag ---
-            // This method simulates a user clicking on a link. It can sometimes be
-            // useful in scenarios where you want to leverage the browser's default
-            // handling of anchor tags (e.g., target="_blank" if it were visible).
-            function triggerDeepLinkWithClick() {
-                console.log('Attempting to open deep link by programmatically clicking hidden anchor tag...');
-                hiddenDeepLink.click();
-            }
+            // The button and its event listener are removed since the redirect is automatic.
+            // If you wanted to retain a button for manual re-triggering, you could keep it.
 
-            // Event listener for the button click
-            triggerButton.addEventListener('click', () => {
-                // You can choose which method to use.
-                // For most deep linking purposes, window.location.href is sufficient and widely used.
-                triggerDeepLinkWithLocation();
-                // Or if you prefer the anchor click method:
-                // triggerDeepLinkWithClick();
+            // Optional: You might want to add a small delay before redirecting,
+            // or display a message to the user that they are being redirected.
+            // For example:
+            // setTimeout(() => {
+            //     window.location.href = deepLinkUrl;
+            // }, 1000); // Redirect after 1 second
 
-                // Optional: You might want to add a small delay and then
-                // redirect to a fallback (e.g., app store) if the app doesn't open.
-                // This is more advanced and requires checking if the app actually launched,
-                // which is not straightforward to do reliably from the browser.
-                // Example of a simple fallback attempt (not guaranteed to work perfectly):
-                // const appOpened = false; // Assume false, difficult to detect
-                // setTimeout(() => {
-                //     if (!appOpened) {
-                //         // window.location.href = 'YOUR_APP_STORE_LINK_HERE';
-                //         console.log('App might not have opened. Consider fallback.');
-                //     }
-                // }, 2000); // Wait 2 seconds
-            });
-
-            console.log('Page loaded and script initialized.');
+            console.log('Script initialized for auto-redirect.');
         });
     </script>
 </body>
