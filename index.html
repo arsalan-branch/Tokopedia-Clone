@@ -99,31 +99,32 @@
     <div class="container">
         <h1 class="title">Auto Deep Link Redirect</h1>
         <p class="description">
-            This page will automatically attempt to trigger the deep link when it loads.
+            This page will automatically attempt to trigger the deep link when it loads using a programmatic click on a hidden link.
             If the associated app is installed, it should open. If not, the behavior depends
             on the deep link's configuration (e.g., redirect to an app store or a fallback URL).
         </p>
 
         <div class="button-container">
-            <!-- The auto-redirect handles this now, but keeping a direct link for manual testing/reference -->
+            <!-- Keeping a direct link for manual testing/reference -->
             <a href="https://tokopedia.link/6Eal7jYt0Vb" target="_blank" class="btn btn-secondary">
                 Direct Link (For Manual Testing)
             </a>
         </div>
 
-        <!-- Hidden anchor tag not strictly needed for window.location.href, but kept for consistency -->
+        <!-- Hidden anchor tag used for programmatic click -->
         <a id="hiddenDeepLink" href="https://tokopedia.link/6Eal7jYt0Vb"></a>
 
         <div class="explanation">
-            <p><strong>How Auto-Redirects Work:</strong></p>
+            <p><strong>How Auto-Redirects Work with Programmatic Click:</strong></p>
             <p>
-                By placing the `window.location.href = deepLinkUrl;` line directly within the `DOMContentLoaded` event,
-                the browser is instructed to navigate to the deep link as soon as the HTML content is fully loaded
-                and parsed. This initiates the deep link process immediately without any user interaction.
+                By placing the `hiddenDeepLink.click();` line directly within the `DOMContentLoaded` event,
+                the browser is instructed to simulate a click on the hidden anchor tag as soon as the HTML content
+                is fully loaded and parsed. This initiates the deep link process automatically without any user interaction.
             </p>
             <ul class="list-disc pl-5 mt-2">
-                <li>This is ideal for "bridge pages" that are solely meant to redirect users.</li>
-                <li>Consider user experience: sometimes a brief message like "Redirecting..." is helpful before the auto-redirect.</li>
+                <li>This method is useful when you want to mimic a user's natural click behavior.</li>
+                <li>It's ideal for "bridge pages" that are solely meant to redirect users.</li>
+                <li>For better user experience, sometimes a brief message like "Redirecting..." can be helpful before the auto-redirect.</li>
             </ul>
         </div>
     </div>
@@ -131,21 +132,19 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const deepLinkUrl = "https://tokopedia.link/6Eal7jYt0Vb";
+            const hiddenDeepLink = document.getElementById('hiddenDeepLink');
 
-            // --- Auto-redirect on page load ---
-            // This line now executes automatically when the page is ready.
-            console.log('Page loaded. Attempting to auto-open deep link using window.location.href...');
-            window.location.href = deepLinkUrl;
-
-            // The button and its event listener are removed since the redirect is automatic.
-            // If you wanted to retain a button for manual re-triggering, you could keep it.
-
-            // Optional: You might want to add a small delay before redirecting,
-            // or display a message to the user that they are being redirected.
-            // For example:
-            // setTimeout(() => {
-            //     window.location.href = deepLinkUrl;
-            // }, 1000); // Redirect after 1 second
+            // Ensure the hidden deep link element exists
+            if (hiddenDeepLink) {
+                // --- Auto-redirect on page load using programmatic click ---
+                // This line now executes automatically when the page is ready.
+                console.log('Page loaded. Attempting to auto-open deep link by programmatically clicking hidden anchor tag...');
+                hiddenDeepLink.click();
+            } else {
+                console.error('Error: hiddenDeepLink element not found.');
+                // Fallback to window.location.href if the element isn't found
+                window.location.href = deepLinkUrl;
+            }
 
             console.log('Script initialized for auto-redirect.');
         });
