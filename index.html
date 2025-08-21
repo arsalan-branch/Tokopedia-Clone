@@ -1,76 +1,184 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Tokopedia Clone</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deep Link Trigger</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for aesthetic appeal */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* Light gray-blue background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .container {
+            background-color: #ffffff; /* White card background */
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            border: 1px solid #e2e8f0; /* Light border */
+        }
+        .title {
+            color: #2d3748; /* Dark text */
+            margin-bottom: 20px;
+            font-size: 1.875rem; /* text-3xl */
+            font-weight: 700; /* font-bold */
+        }
+        .description {
+            color: #4a5568; /* Medium text */
+            margin-bottom: 30px;
+            font-size: 1rem; /* text-base */
+            line-height: 1.6;
+        }
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            text-decoration: none;
+            text-align: center;
+        }
+        .btn-primary {
+            background-color: #4c51bf; /* Indigo-700 */
+            color: #ffffff;
+            box-shadow: 0 4px 10px rgba(76, 81, 191, 0.3);
+        }
+        .btn-primary:hover {
+            background-color: #363c9d; /* Darker indigo */
+            box-shadow: 0 6px 15px rgba(76, 81, 191, 0.4);
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background-color: #cbd5e0; /* Gray-300 */
+            color: #2d3748;
+            box-shadow: 0 4px 10px rgba(203, 213, 224, 0.3);
+        }
+        .btn-secondary:hover {
+            background-color: #a0aec0; /* Darker gray */
+            box-shadow: 0 6px 15px rgba(203, 213, 224, 0.4);
+            transform: translateY(-2px);
+        }
+        .explanation {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #edf2f7; /* Light gray for explanation */
+            border-radius: 8px;
+            text-align: left;
+            font-size: 0.875rem; /* text-sm */
+            color: #4a5568;
+            border: 1px solid #e2e8f0;
+        }
+        .explanation strong {
+            color: #2d3748;
+        }
+        /* Hidden elements for programmatic click */
+        #hiddenDeepLink {
+            display: none;
+        }
+    </style>
 </head>
-<body>
+<body class="antialiased">
+    <div class="container">
+        <h1 class="title">Deep Link Trigger Example</h1>
+        <p class="description">
+            This page demonstrates how to programmatically trigger a deep link. Clicking the "Trigger Deep Link" button will attempt to open the specified app link. If the app is not installed, it might redirect to a fallback URL (e.g., app store) depending on the deep link configuration.
+        </p>
 
-  <!-- Header -->
-  <header>
-    <div class="navbar">
-      <div class="logo">Tokopedia</div>
-      <input type="text" placeholder="Search products..." class="search-bar" />
-      <div class="nav-links">
-        <a href="#">Login</a>
-        <a href="#">Signup</a>
-        <a href="#">Cart</a>
-      </div>
+        <div class="button-container">
+            <button id="triggerButton" class="btn btn-primary">
+                Trigger Deep Link
+            </button>
+            <a href="https://pawanpal1.app.link/ISR52ZrCvUb" target="_blank" class="btn btn-secondary">
+                Direct Link (For Testing)
+            </a>
+        </div>
+
+        <!-- Hidden anchor tag used for programmatic click -->
+        <a id="hiddenDeepLink" href="https://pawanpal1.app.link/ISR52ZrCvUb"></a>
+
+        <div class="explanation">
+            <p><strong>How Deep Links Work:</strong></p>
+            <p>
+                When you click a deep link, the browser attempts to open the associated application on your device.
+                If the app is installed, it will typically launch and navigate to the specific content defined by the link.
+                If the app is not installed, the behavior can vary:
+            </p>
+            <ul class="list-disc pl-5 mt-2">
+                <li>It might do nothing (fail silently).</li>
+                <li>It might redirect you to the app store (Google Play Store or Apple App Store).</li>
+                <li>It might redirect you to a specific webpage.</li>
+            </ul>
+            <p class="mt-2">
+                This behavior is configured by the app developer and the deep linking service they use.
+            </p>
+        </div>
     </div>
-  </header>
 
-  <!-- Hero Banner -->
-  <section class="hero">
-    <div class="hero-text">
-      <h1>Find everything you need!</h1>
-      <p>Great deals every day at Tokopedia Clone</p>
-    </div>
-  </section>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const deepLinkUrl = "https://pawanpal1.app.link/ISR52ZrCvUb";
+            const triggerButton = document.getElementById('triggerButton');
+            const hiddenDeepLink = document.getElementById('hiddenDeepLink');
 
-  <!-- Categories -->
-  <section class="categories">
-    <h2>Popular Categories</h2>
-    <div class="category-list">
-      <div class="category-item">Electronics</div>
-      <div class="category-item">Fashion</div>
-      <div class="category-item">Home</div>
-      <div class="category-item">Health</div>
-      <div class="category-item">Sports</div>
-    </div>
-  </section>
+            // --- Method 1: Using window.location.href ---
+            // This method is direct and often the most reliable for initiating a deep link.
+            // It effectively tells the browser to navigate to that URL.
+            function triggerDeepLinkWithLocation() {
+                console.log('Attempting to open deep link using window.location.href...');
+                window.location.href = deepLinkUrl;
+            }
 
-  <!-- Products Grid -->
-  <section class="products">
-    <h2>Featured Products</h2>
-    <div class="product-grid">
-      <div class="product-card">
-        <img src="https://via.placeholder.com/150" alt="Product Image" />
-        <h3>Product Name</h3>
-        <p>$99.99</p>
-      </div>
-      <div class="product-card">
-        <img src="https://via.placeholder.com/150" alt="Product Image" />
-        <h3>Product Name</h3>
-        <p>$79.99</p>
-      </div>
-      <div class="product-card">
-        <img src="https://via.placeholder.com/150" alt="Product Image" />
-        <h3>Product Name</h3>
-        <p>$49.99</p>
-      </div>
-      <!-- Add more product cards as needed -->
-    </div>
-  </section>
+            // --- Method 2: Programmatically clicking a hidden anchor tag ---
+            // This method simulates a user clicking on a link. It can sometimes be
+            // useful in scenarios where you want to leverage the browser's default
+            // handling of anchor tags (e.g., target="_blank" if it were visible).
+            function triggerDeepLinkWithClick() {
+                console.log('Attempting to open deep link by programmatically clicking hidden anchor tag...');
+                hiddenDeepLink.click();
+            }
 
-  <!-- Footer -->
-  <footer>
-    <p>&copy; 2025 Tokopedia Clone. All rights reserved.</p>
-  </footer>
+            // Event listener for the button click
+            triggerButton.addEventListener('click', () => {
+                // You can choose which method to use.
+                // For most deep linking purposes, window.location.href is sufficient and widely used.
+                triggerDeepLinkWithLocation();
+                // Or if you prefer the anchor click method:
+                // triggerDeepLinkWithClick();
 
+                // Optional: You might want to add a small delay and then
+                // redirect to a fallback (e.g., app store) if the app doesn't open.
+                // This is more advanced and requires checking if the app actually launched,
+                // which is not straightforward to do reliably from the browser.
+                // Example of a simple fallback attempt (not guaranteed to work perfectly):
+                // const appOpened = false; // Assume false, difficult to detect
+                // setTimeout(() => {
+                //     if (!appOpened) {
+                //         // window.location.href = 'YOUR_APP_STORE_LINK_HERE';
+                //         console.log('App might not have opened. Consider fallback.');
+                //     }
+                // }, 2000); // Wait 2 seconds
+            });
+
+            console.log('Page loaded and script initialized.');
+        });
+    </script>
 </body>
 </html>
